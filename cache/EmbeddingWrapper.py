@@ -23,7 +23,7 @@ class EmbeddingWrapper:
 
     @torch.no_grad()
     def get_outputs(self, loader):
-        """Runs and returns model embeddings, labels, and logits for the given dataset."""
+        """Runs and returns models embeddings, labels, and logits for the given datasets."""
         device = self.backbone.device
         features = []
         labels = []
@@ -43,14 +43,21 @@ class EmbeddingWrapper:
         return features, labels, logits
 
     @torch.no_grad()
-    def run_and_cache_outputs(self, dataset, batch_size, output_dir="cache/caches"):
+    def run_and_cache_outputs(self, dataset, batch_size, output_dir="cache/caches", train=True):
         """
-        If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the model and cache the outputs.
+        If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the models and cache the outputs.
         """
+        if train:
+            output_dir = output_dir + "/train"
+            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
+        else:
+            output_dir = output_dir + "/test"
+            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
 
-        features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
-        labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
-        logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
         if os.path.exists(logits_file):
             print(f"Found: {logits_file}, loading.")
             features = np.load(features_file)

@@ -29,7 +29,7 @@ class TopNoSoftmax(nn.Module):
         return x
 
 
-def get_image_classifier(model_name):
+def build_classifier(model_name):
     model = build_model(model_name)
     model_bottom, model_top = Bottom(model), TopNoSoftmax(model)
     extractor = EmbeddingWrapper(model_bottom, model_top, model_name)
