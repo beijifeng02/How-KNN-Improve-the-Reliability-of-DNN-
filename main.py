@@ -3,6 +3,7 @@ import argparse
 from commons.utils import set_seed
 from datasets.utils import build_dataloader
 from cache.utils import build_classifier
+from algorithms.estimator import KNNDistance
 
 
 def main():
@@ -21,3 +22,6 @@ if __name__ == '__main__':
     trainloader, testloader = build_dataloader()
     train_feature, train_logits, train_labels = model.run_and_cache_outputs(trainloader)
     test_feature, test_logits, test_labels = model.run_and_cache_outputs(testloader, train=False)
+    estimator = KNNDistance()
+    estimator.fit(train_feature, train_labels)
+    print(estimator.compute_atypicality(test_feature))
