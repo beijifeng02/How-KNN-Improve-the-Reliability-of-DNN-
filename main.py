@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description="Experiment for 'How-KNN-Improve-the-Reliability-of-DNN'")
     parser.add_argument('--seed', type=int, default=42, help='seed')
     parser.add_argument('--model', type=str, default='resnet50', help='model')
-    parser.add_argument('--batch_size', type=str, default=256, help='model')
+    parser.add_argument('--batch_size', type=int, default=256, help='model')
 
     args = parser.parse_args()
     return args
