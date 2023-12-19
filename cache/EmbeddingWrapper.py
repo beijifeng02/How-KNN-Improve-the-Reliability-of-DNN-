@@ -41,7 +41,7 @@ class EmbeddingWrapper:
         return features, labels, logits
 
     @torch.no_grad()
-    def run_and_cache_outputs(self, dataset, batch_size=256, output_dir="cache/caches", train=True):
+    def run_and_cache_outputs(self, dataloader, output_dir="cache/caches", train=True):
         """
         If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the models and cache the outputs.
         """
@@ -63,8 +63,7 @@ class EmbeddingWrapper:
             logits = np.load(logits_file)
         else:
             print(f"Not found: {logits_file}, extracting.")
-            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=8)
-            features, labels, logits = self.get_outputs(loader)
+            features, labels, logits = self.get_outputs(dataloader)
             np.save(features_file, features)
             np.save(labels_file, labels)
             np.save(logits_file, logits)
