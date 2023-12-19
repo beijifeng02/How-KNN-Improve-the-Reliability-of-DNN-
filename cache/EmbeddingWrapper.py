@@ -43,7 +43,7 @@ class EmbeddingWrapper:
         return features, labels, logits
 
     @torch.no_grad()
-    def run_and_cache_outputs(self, dataset, batch_size, output_dir="cache/caches", train=True):
+    def run_and_cache_outputs(self, dataset, batch_size=256, output_dir="cache/caches", train=True):
         """
         If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the models and cache the outputs.
         """
