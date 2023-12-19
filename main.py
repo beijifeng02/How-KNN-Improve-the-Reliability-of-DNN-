@@ -24,4 +24,4 @@ if __name__ == '__main__':
     test_feature, test_logits, test_labels = model.run_and_cache_outputs(testloader, train=False)
     estimator = KNNDistance()
     estimator.fit(train_feature, train_labels)
-    print(estimator.compute_atypicality(test_feature))
+    atypicality = estimator.compute_atypicality(test_feature)
