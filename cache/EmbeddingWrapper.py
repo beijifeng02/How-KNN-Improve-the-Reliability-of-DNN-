@@ -16,9 +16,9 @@ def split_test(lbls, acts, logits, split=0.2, seed=1):
 
 
 class EmbeddingWrapper:
-    def __init__(self, backbone, model_top, model_name):
+    def __init__(self, backbone, model, model_name):
         self.backbone = backbone
-        self.model_top = model_top
+        self.model = model
         self.model_name = model_name
 
     @torch.no_grad()
@@ -33,7 +33,7 @@ class EmbeddingWrapper:
             features.append(batch_feature.detach().cpu().numpy())
             labels.append(label.detach().cpu().numpy())
 
-            logits.append(self.model_top(batch_feature).detach().cpu().numpy())
+            logits.append(self.model(image).detach().cpu().numpy())
 
         features = np.concatenate(features, axis=0)
         labels = np.concatenate(labels, axis=0)
