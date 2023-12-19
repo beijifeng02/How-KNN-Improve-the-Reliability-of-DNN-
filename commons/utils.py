@@ -23,7 +23,7 @@ def get_fig_records(info, N_groups=5, **metadata):
     records = []
     probs = info["probs"]
     labels = info["labels"]
-    atypicality = info["input_atypicality"].flatten()
+    atypicality = info["atypicality"].flatten()
 
     quantiles = np.linspace(0, 1, N_groups)
     for q_lower, q_higher in zip(quantiles[:-1], quantiles[1:]):
