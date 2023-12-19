@@ -1,6 +1,6 @@
 import argparse
 
-from commons.utils import set_seed
+from commons.utils import set_seed, evaluate
 from datasets.utils import build_dataloader
 from cache.utils import build_classifier
 from algorithms.estimator import KNNDistance
@@ -25,3 +25,4 @@ if __name__ == '__main__':
     estimator = KNNDistance()
     estimator.fit(train_feature, train_labels)
     atypicality = estimator.compute_atypicality(test_feature)
+    data = evaluate(test_labels, test_logits, atypicality)
