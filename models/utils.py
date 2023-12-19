@@ -5,15 +5,20 @@ import torchvision.models as models
 
 def build_model(model_name):
     if model_name == "resnet18":
-        model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
+        from models.resnet import resnet18
+        model = resnet18()
     elif model_name == "resnet50":
-        model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
+        from models.resnet import resnet50
+        model = resnet50()
     elif model_name == "resnet101":
-        model = models.resnet101(weights=models.ResNet101_Weights.IMAGENET1K_V1)
-    else:
-        raise ValueError("This models is not supported.")
+        from models.resnet import resnet101
+        model = resnet101()
 
-    model = torch.nn.DataParallel(model)
+    ckpt_dir = f"ckpt/{model_name}.pth"
+
     cudnn.benchmark = True
+    state_dic = torch.load(ckpt_dir)
+    model.load_state_dict(state_dic)
+    model = torch.nn.DataParallel(model)
     model.eval()
     return model
