@@ -5,7 +5,7 @@ import torch.nn as nn
 from torchvision import transforms, models
 
 from .EmbeddingWrapper import EmbeddingWrapper
-from model.utils import build_model
+from models.utils import build_model
 
 
 class Bottom(nn.Module):
