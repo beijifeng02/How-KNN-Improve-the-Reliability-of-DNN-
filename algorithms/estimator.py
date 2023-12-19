@@ -1,6 +1,98 @@
 import numpy as np
 from tqdm import tqdm
+from scipy.stats._multivariate import _PSD
+from sklearn.decomposition import PCA
+from sklearn.covariance import EmpiricalCovariance
 from sklearn.neighbors import KNeighborsClassifier
+from scipy.special import logsumexp
+
+
+class GMMAtypicalityEstimator:
+    """
+    Gaussian mixture model assuming that mixture components share the covariance matrix.
+    """
+
+    def __init__(self, pca=None, atypicality_type="class"):
+        self.name = f"gmmFast_{pca}_{atypicality_type}"
+        self.atypicality_type = atypicality_type
+        self.class_means = None
+        self.shared_cov = None
+        self.shared_prec = None
+        self.n_classes = None
+        self.emb_dim = None
+        self.cov_est = EmpiricalCovariance(assume_centered=False)
+        self.shared_cov_logdet = None  # logdeterminant of the covariance for computing the pdf
+        if pca is not None:
+            self.pca = PCA(n_components=pca)
+        else:
+            self.pca = None
+
+    def fit(self, train_feature, train_labels):
+        class_means, shared_cov = [], np.zeros((train_feature.shape[1], train_feature.shape[1]))
+        div_from_means = []
+        if self.pca is not None:
+            train_feature = self.pca.fit_transform(train_feature)
+
+        # Compute empirical means and covariance
+
+        for lbl in np.unique(train_labels):
+            cls_feature = train_feature[train_labels == lbl]
+            means = np.mean(cls_feature, axis=0, keepdims=True)
+            class_means.append(means)
+            div_from_mean = cls_feature - means
+            div_from_means.append(div_from_mean)
+
+        self.class_means = np.concatenate(class_means, axis=0)
+
+        div_from_means = np.concatenate(div_from_means, axis=0)
+        self.cov_est.fit(div_from_means)
+        self.shared_cov = self.cov_est.covariance_
+
+        # Use internal scipy fns for numerical stability. Too lazy to do this on my own
+        psd = _PSD(self.shared_cov)
+        self.shared_prec = np.dot(psd.U, psd.U.T)
+
+        self.shared_cov_logdet = psd.log_pdet
+        print("Means and convs are computed!")
+
+        print("Inverse taken!")
+        self.n_classes = len(class_means)
+        self.emb_dim = self.shared_cov.shape[1]
+
+    def _compute_mvn_logpdf(self, feature, mean, cov_log_det, prec):
+        """
+        Compute the pdf of the gaussian
+        """
+        logpart1 = - 0.5 * (self.emb_dim * np.log(2 * np.pi) + cov_log_det)
+        part2 = (-1 / 2) * np.einsum("nd, nd->n", (feature - mean).dot(prec), (feature - mean))
+        return logpart1 + part2
+
+    def compute_logphat_x(self, logphatx_y, phat_y):
+        loglikelihood = logsumexp(logphatx_y + np.log(phat_y), axis=1)
+        return loglikelihood
+
+    def compute_atypicality(self, feature, py_x=None):
+        if self.pca is not None:
+            feature = self.pca.transform(feature)
+
+        cls_ps = []
+        for idx in tqdm(range(self.n_classes)):
+            cls_mean = self.class_means[idx]
+            cls_p = self._compute_mvn_logpdf(feature, mean=cls_mean, cov_log_det=self.shared_cov_logdet,
+                                             prec=self.shared_prec)
+            cls_ps.append(cls_p)
+
+        cls_ps = np.vstack(cls_ps).T
+        logphat_x = self.compute_logphat_x(cls_ps, np.ones(self.n_classes) / self.n_classes)
+        if self.atypicality_type == "class":
+            # Returns - \max_c \hat{p}(X|Y=c)
+            return -np.max(cls_ps, axis=1)
+        elif self.atypicality_type == "all_class":
+            # Returns - \max_c \hat{p}(X|Y=c)
+            return -cls_ps
+        else:
+            # Returns - \hat{p}(X)
+            return -logphat_x
 
 
 class KNNDistance:

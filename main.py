@@ -3,7 +3,7 @@ import argparse
 from commons.utils import set_seed, evaluate
 from datasets.utils import build_dataloader
 from cache.utils import build_classifier
-from algorithms.estimator import KNNDistance
+from algorithms.estimator import KNNDistance, GMMAtypicalityEstimator
 
 
 def main():
@@ -22,7 +22,8 @@ if __name__ == '__main__':
     trainloader, testloader = build_dataloader()
     train_feature, train_logits, train_labels = model.run_and_cache_outputs(trainloader)
     test_feature, test_logits, test_labels = model.run_and_cache_outputs(testloader, train=False)
-    estimator = KNNDistance()
+    # estimator = KNNDistance()
+    estimator = GMMAtypicalityEstimator()
     estimator.fit(train_feature, train_labels)
     atypicality = estimator.compute_atypicality(test_feature)
     data = evaluate(test_labels, test_logits, atypicality)
