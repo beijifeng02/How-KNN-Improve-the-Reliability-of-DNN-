@@ -5,13 +5,13 @@ import torchvision.models as models
 
 def build_model(model_name):
     if model_name == "resnet18":
-        from models.resnet import resnet18
+        from .models.resnet import resnet18
         model = resnet18()
     elif model_name == "resnet50":
-        from models.resnet import resnet50
+        from .models.resnet import resnet50
         model = resnet50()
     elif model_name == "resnet101":
-        from models.resnet import resnet101
+        from .models.resnet import resnet101
         model = resnet101()
 
     ckpt_dir = f"ckpt/{model_name}.pth"
