@@ -64,6 +64,12 @@ class EmbeddingWrapper:
         else:
             print(f"Not found: {logits_file}, extracting.")
             features, labels, logits = self.get_outputs(dataloader)
+
+            if not os.path.exists(output_dir + "/train"):
+                os.makedirs(output_dir + "/train")
+            if not os.path.exists(output_dir + "/test"):
+                os.makedirs(output_dir + "/test")
+
             np.save(features_file, features)
             np.save(labels_file, labels)
             np.save(logits_file, logits)
