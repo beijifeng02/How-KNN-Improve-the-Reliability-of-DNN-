@@ -24,12 +24,10 @@ class EmbeddingWrapper:
     @torch.no_grad()
     def get_outputs(self, loader):
         """Runs and returns models embeddings, labels, and logits for the given datasets."""
-        device = self.backbone.device
         features = []
         labels = []
         logits = []
         for image, label in tqdm(loader):
-            image = image.to(device)
             # get feature
             batch_feature = self.backbone(image).view(image.shape[0], -1)
             features.append(batch_feature.detach().cpu().numpy())
