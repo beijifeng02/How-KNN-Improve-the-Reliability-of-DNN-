@@ -44,12 +44,12 @@ def get_fig_records(info, N_groups=5, **metadata):
     return records
 
 
-def evaluate(labels, logits, atypicality):
+def evaluate(labels, logits, atypicality, N_groups=10):
     prob_info = {
         "probs": softmax(logits, 1),
         "atypicality": atypicality,
         "labels": labels
     }
-    all_records = get_fig_records(prob_info, N_groups=5)
+    all_records = get_fig_records(prob_info, N_groups=N_groups)
     data = pd.DataFrame(all_records)
     return data
