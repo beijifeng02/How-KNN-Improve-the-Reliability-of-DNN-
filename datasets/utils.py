@@ -19,7 +19,7 @@ transform_cifar10_test = transforms.Compose([
 
 
 # ----------------------------------------------------------------------- #
-def build_dataloader(data_dir="/data/datasets/", batch_size=258, num_workers=8):
+def build_dataloader(data_dir="/data/dataset/", batch_size=258, num_workers=8):
     trainset = datasets.CIFAR10(root=data_dir, train=True, download=True, transform=transform_cifar10_train)
     testset = datasets.CIFAR10(root=data_dir, train=False, download=True, transform=transform_cifar10_test)
     trainloader = torch.utils.data.DataLoader(dataset=trainset, batch_size=batch_size, num_workers=num_workers)
