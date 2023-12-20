@@ -76,7 +76,7 @@ _C.TEST.SEED = 42
 _C.TEST.DISTANCE = "knn"
 
 # K
-_C.TEST.K = 5
+_C.TEST.K = 3
 
 # --------------------------------- Default config -------------------------- #
 _CFG_DEFAULT = _C.clone()
