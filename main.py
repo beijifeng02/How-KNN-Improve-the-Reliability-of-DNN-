@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # calibration
     calibrator = TemperatureScaling()
     calibrator.fit(calib_logits, calib_labels)
-    test_logits = calibrator.calibrate(test_logits, softmax=False)
+    test_logits = calibrator.calibrate(test_logits, softmax_bool=False)
 
     # calculate atypicality
     estimator = KNNDistance()
