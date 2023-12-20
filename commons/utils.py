@@ -36,7 +36,8 @@ def get_fig_records(info, N_groups=5, **metadata):
             conf_lower = conf
             conf_upper = conf + 0.1
 
-            mask = (atypicality <= vs[1]) & (atypicality > vs[0]) & (probs >= conf_lower) & (probs <= conf_upper)
+            mask = ((atypicality <= vs[1]) & (atypicality > vs[0]) & (np.max(probs, 1) >= conf_lower)
+                    & (np.max(probs, 1) <= conf_upper))
             group_probs = probs[mask]
             group_lbls = labels[mask]
             group_atypicality = atypicality[mask]
