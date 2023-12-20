@@ -50,6 +50,13 @@ class EmbeddingWrapper:
         calib_dir = cfg.CACHE.CALIB_DIR
         test_dir = cfg.CACHE.TEST_DIR
 
+        if not os.path.exists(train_dir):
+                os.makedirs(train_dir)
+        if not os.path.exists(calib_dir):
+            os.makedirs(calib_dir)
+        if not os.path.exists(test_dir):
+            os.makedirs(test_dir)
+
         if mode == "train":
             features_file = os.path.join(train_dir, f"{self.model_name}_features.npy")
             labels_file = os.path.join(train_dir, f"{self.model_name}_labels.npy")
@@ -71,13 +78,6 @@ class EmbeddingWrapper:
         else:
             print(f"Not found: {logits_file}, extracting.")
             features, labels, logits = self.get_outputs(dataloader)
-
-            if not os.path.exists("cache/caches/train"):
-                os.makedirs("cache/caches/train")
-            if not os.path.exists("cache/caches/test"):
-                os.makedirs("cache/caches/test")
-                if not os.path.exists("cache/caches/calib"):
-                    os.makedirs("cache/caches/calib")
 
             np.save(features_file, features)
             np.save(labels_file, labels)
