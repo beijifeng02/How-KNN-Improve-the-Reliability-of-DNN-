@@ -8,7 +8,7 @@ def build_model(cfg):
     model_name = cfg.MODEL.ARCH
     ckpt_dir = cfg.MODEL.CKPT_DIR
 
-    if dataset == "cifar10":
+    if dataset == "cifar10" or dataset == "svhn":
         if model_name == "resnet18":
             from .cifar10.resnet import ResNet18
             model = ResNet18()
@@ -43,6 +43,9 @@ def build_model(cfg):
         state_dic = torch.load(ckpt_dir)
         model.load_state_dict(state_dic)
         model = torch.nn.DataParallel(model)
+
+    else:
+        raise NotImplementedError(f"dataset {dataset} is not supported.")
 
     model.eval()
     return model
