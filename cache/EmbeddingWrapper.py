@@ -30,6 +30,7 @@ class EmbeddingWrapper:
         for image, label in tqdm(loader):
             # get feature
             batch_feature = self.backbone(image).view(image.shape[0], -1)
+            batch_feature = batch_feature / torch.norm(batch_feature, dim=1, keepdim=True)
             features.append(batch_feature.detach().cpu().numpy())
             labels.append(label.detach().cpu().numpy())
 
