@@ -25,6 +25,8 @@ transform_cifar100_test = transforms.Compose([
 def build_dataloader(data_dir="/data/dataset/", batch_size=258, num_workers=8):
     trainset = datasets.CIFAR100(root=data_dir, train=True, download=True, transform=transform_cifar100_train)
     testset = datasets.CIFAR100(root=data_dir, train=False, download=True, transform=transform_cifar100_test)
+    calibset, testset = torch.utils.data.random_split(testset, [5000, 5000])
     trainloader = torch.utils.data.DataLoader(dataset=trainset, batch_size=batch_size, num_workers=num_workers)
+    calibloader = torch.utils.data.DataLoader(dataset=calibset, batch_size=batch_size, num_workers=num_workers)
     testloader = torch.utils.data.DataLoader(dataset=testset, batch_size=batch_size, num_workers=num_workers)
-    return trainloader, testloader
+    return trainloader, calibloader, testloader
