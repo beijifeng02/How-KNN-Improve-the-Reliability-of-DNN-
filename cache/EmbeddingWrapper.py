@@ -51,7 +51,7 @@ class EmbeddingWrapper:
         test_dir = cfg.CACHE.TEST_DIR
 
         if not os.path.exists(train_dir):
-                os.makedirs(train_dir)
+            os.makedirs(train_dir)
         if not os.path.exists(calib_dir):
             os.makedirs(calib_dir)
         if not os.path.exists(test_dir):
