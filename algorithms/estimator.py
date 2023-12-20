@@ -168,8 +168,9 @@ class KNN_estimator:
 
         for i in tqdm(range(len(features))):
             distance = torch.norm(features[i] - self.features, dim=1)
-            top_k_distances = torch.sort(distance)[:self.k]
-            atypicality = torch.exp(torch.sum(top_k_distances) / self.k)
-            atypicality_list.append(atypicality)
+            top_k_distances, _ = torch.sort(distance)
+            top_k_distances = top_k_distances[:self.k]
+            atypicality = torch.exp(-torch.sum(top_k_distances) / self.k)
+            atypicality_list.append(atypicality.item())
 
         return atypicality_list
