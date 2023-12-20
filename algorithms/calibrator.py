@@ -6,10 +6,7 @@ from .ECELoss import _ECELoss
 
 
 class TemperatureScaling:
-    def __init__(self, cfg):
-        super().__init__(cfg)
-        temperature = cfg.PREPROCESS.TEMPERATURE
-        self.train_bool = False if temperature is not None else True
+    def __init__(self):
         self.temperature = nn.Parameter(torch.tensor([1.5]).cuda())
 
     def fit(self, logits, labels):
