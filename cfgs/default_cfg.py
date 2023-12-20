@@ -75,6 +75,9 @@ _C.TEST.SEED = 42
 # distance: knn or gmm
 _C.TEST.DISTANCE = "knn"
 
+# K
+_C.TEST.K = 5
+
 # --------------------------------- Default config -------------------------- #
 _CFG_DEFAULT = _C.clone()
 _CFG_DEFAULT.freeze()

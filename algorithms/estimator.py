@@ -149,3 +149,24 @@ class KNNDistance:
             return all_scores
         else:
             return np.min(all_scores, axis=1)
+
+
+class KNN_estimator:
+
+    def __init__(self, cfg):
+        self.classes = cfg.DATA.CLASS
+        self.k = cfg.TEST.K
+
+    def fit(self, features, labels):
+        self.features = features
+        self.labels = labels
+
+    def predict(self, features):
+        atypicality_list = []
+        for i in range(len(features)):
+            distance = np.linalg.norm(features[i] - self.features, axis=1)
+            top_k_distances = np.sort(distance)[:self.k]
+            atypicality = np.exp(np.sum(top_k_distances) / self.k)
+            atypicality_list.append(atypicality)
+
+        return atypicality_list
