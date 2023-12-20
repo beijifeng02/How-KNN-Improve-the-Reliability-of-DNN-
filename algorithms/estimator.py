@@ -173,4 +173,4 @@ class KNN_estimator:
             atypicality = torch.exp(-torch.sum(top_k_distances) / self.k)
             atypicality_list.append(atypicality.item())
 
-        return atypicality_list
+        return np.array(atypicality_list)
