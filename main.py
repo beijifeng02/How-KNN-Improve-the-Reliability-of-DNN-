@@ -27,4 +27,5 @@ if __name__ == '__main__':
     # estimator = GMMAtypicalityEstimator()
     estimator.fit(train_feature, train_labels)
     atypicality = estimator.compute_atypicality(test_feature)
-    print(evaluate(test_labels, test_logits, atypicality))
+    data = evaluate(test_labels, test_logits, atypicality)
+    print(data)
