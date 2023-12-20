@@ -1,0 +1,6 @@
+DATA:
+  DATA_DIR: /data/dataset/
+  NAME: cifar100
+  CLASS: 100
+  LENGTH: 10000
+  CALIB_NUM: 2000

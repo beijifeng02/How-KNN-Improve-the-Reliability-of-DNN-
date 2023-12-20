@@ -6,7 +6,8 @@ import torch
 from scipy.special import softmax
 
 
-def set_seed(seed=666):
+def set_seed(cfg):
+    seed = cfg.TEST.SEED
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
     np.random.seed(seed)

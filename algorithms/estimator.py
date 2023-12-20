@@ -7,6 +7,19 @@ from sklearn.neighbors import KNeighborsClassifier
 from scipy.special import logsumexp
 
 
+def build_estimator(cfg):
+    distance = cfg.TEST.DISTANCE
+
+    if distance == "gmm":
+        return GMMAtypicalityEstimator()
+
+    elif distance == "knn":
+        return KNNDistance()
+
+    else:
+        raise NotImplementedError("Unknown distance {}".format(distance))
+
+
 class GMMAtypicalityEstimator:
     """
     Gaussian mixture model assuming that mixture components share the covariance matrix.

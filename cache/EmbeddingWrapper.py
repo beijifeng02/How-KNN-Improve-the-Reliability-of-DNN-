@@ -41,25 +41,27 @@ class EmbeddingWrapper:
         return features, labels, logits
 
     @torch.no_grad()
-    def run_and_cache_outputs(self, dataloader, output_dir="cache/caches", mode="train"):
+    def run_and_cache_outputs(self, cfg, dataloader, mode="train"):
         """
         If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the models and cache the outputs.
         """
+
+        train_dir = cfg.CACHE.TRAIN_DIR
+        calib_dir = cfg.CACHE.CALIB_DIR
+        test_dir = cfg.CACHE.TEST_DIR
+
         if mode == "train":
-            output_dir = output_dir + "/train"
-            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
-            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
-            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
+            features_file = os.path.join(train_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(train_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(train_dir, f"{self.model_name}_logits.npy")
         elif mode == "test":
-            output_dir = output_dir + "/test"
-            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
-            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
-            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
+            features_file = os.path.join(calib_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(calib_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(calib_dir, f"{self.model_name}_logits.npy")
         elif mode == "calib":
-            output_dir = output_dir + "/calib"
-            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
-            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
-            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
+            features_file = os.path.join(test_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(test_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(test_dir, f"{self.model_name}_logits.npy")
 
         if os.path.exists(logits_file):
             print(f"Found: {logits_file}, loading.")
