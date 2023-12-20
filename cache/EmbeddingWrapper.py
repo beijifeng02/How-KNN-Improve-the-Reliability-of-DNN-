@@ -41,17 +41,22 @@ class EmbeddingWrapper:
         return features, labels, logits
 
     @torch.no_grad()
-    def run_and_cache_outputs(self, dataloader, output_dir="cache/caches", train=True):
+    def run_and_cache_outputs(self, dataloader, output_dir="cache/caches", mode="train"):
         """
         If the experiment files (embeddings, labels, logits) already exist, load them. Otherwise, run the models and cache the outputs.
         """
-        if train:
+        if mode == "train":
             output_dir = output_dir + "/train"
             features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
             labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
             logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
-        else:
+        elif mode == "test":
             output_dir = output_dir + "/test"
+            features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
+            labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
+            logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
+        elif mode == "calib":
+            output_dir = output_dir + "/calib"
             features_file = os.path.join(output_dir, f"{self.model_name}_features.npy")
             labels_file = os.path.join(output_dir, f"{self.model_name}_labels.npy")
             logits_file = os.path.join(output_dir, f"{self.model_name}_logits.npy")
@@ -69,6 +74,8 @@ class EmbeddingWrapper:
                 os.makedirs("cache/caches/train")
             if not os.path.exists("cache/caches/test"):
                 os.makedirs("cache/caches/test")
+                if not os.path.exists("cache/caches/calib"):
+                    os.makedirs("cache/caches/calib")
 
             np.save(features_file, features)
             np.save(labels_file, labels)
