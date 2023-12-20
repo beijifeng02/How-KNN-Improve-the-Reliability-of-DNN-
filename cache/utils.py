@@ -32,7 +32,7 @@ class TopNoSoftmax(nn.Module):
 def build_classifier(cfg):
     model_name = cfg.MODEL.ARCH
 
-    model = build_model(model_name)
+    model = build_model(cfg)
     model_bottom, model_top = Bottom(model), TopNoSoftmax(model)
     extractor = EmbeddingWrapper(model_bottom, model, model_name)
     extractor.model_name = model_name
