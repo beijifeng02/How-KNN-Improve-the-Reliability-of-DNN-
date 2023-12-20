@@ -1,4 +1,4 @@
-from cfgs.defalut_cfg import cfg, load_cfg_fom_args
+from cfgs.default_cfg import cfg, load_cfg_fom_args
 from commons.utils import set_seed, evaluate
 from datasets.utils import build_dataloader
 from cache.utils import build_classifier
