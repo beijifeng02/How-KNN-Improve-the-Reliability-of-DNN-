@@ -161,7 +161,7 @@ class KNN_estimator:
         self.features = features
         self.labels = labels
 
-    def predict(self, features):
+    def compute_atypicality(self, features):
         atypicality_list = []
         for i in range(len(features)):
             distance = np.linalg.norm(features[i] - self.features, axis=1)
