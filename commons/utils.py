@@ -26,15 +26,14 @@ def get_fig_records(info, N_groups=5, **metadata):
     atypicality = info["atypicality"].flatten()
 
     quantiles = np.linspace(0, 1, N_groups)
-    for q_lower, q_higher in zip(quantiles[:-1], quantiles[1:]):
-        vs = np.quantile(atypicality, q=[q_lower, q_higher])
-        # Control for the start
-        if q_lower == 0:
-            vs[0] = -np.inf
-
-        for conf in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0]:
-            conf_lower = conf
-            conf_upper = conf + 0.1
+    for conf in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0]:
+        conf_lower = conf
+        conf_upper = conf + 0.1
+        for q_lower, q_higher in zip(quantiles[:-1], quantiles[1:]):
+            vs = np.quantile(atypicality, q=[q_lower, q_higher])
+            # Control for the start
+            if q_lower == 0:
+                vs[0] = -np.inf
 
             mask = ((atypicality <= vs[1]) & (atypicality > vs[0]) & (np.max(probs, 1) >= conf_lower)
                     & (np.max(probs, 1) <= conf_upper))
