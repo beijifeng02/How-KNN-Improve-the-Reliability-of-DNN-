@@ -163,7 +163,7 @@ class KNN_estimator:
 
     def compute_atypicality(self, features):
         atypicality_list = []
-        for i in range(len(features)):
+        for i in tqdm(range(len(features))):
             distance = np.linalg.norm(features[i] - self.features, axis=1)
             top_k_distances = np.sort(distance)[:self.k]
             atypicality = np.exp(np.sum(top_k_distances) / self.k)
