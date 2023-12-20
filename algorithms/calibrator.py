@@ -11,8 +11,8 @@ class TemperatureScaling:
         self.temperature = nn.Parameter(torch.tensor([1.5]).cuda())
 
     def fit(self, logits, labels):
-        logits = torch.tensor(logits)
-        labels = torch.tensor(labels).long()
+        logits = torch.tensor(logits).cuda()
+        labels = torch.tensor(labels).long().cuda()
         nll_criterion = nn.CrossEntropyLoss()
         ece_criterion = _ECELoss()
 
@@ -37,6 +37,6 @@ class TemperatureScaling:
 
     def calibrate(self, logits, softmax_bool=True):
         if softmax_bool:
-            return softmax(logits / self.temperature)
+            return softmax(logits / self.temperature.detach().cpu().numpy())
 
-        return logits / self.temperature
+        return logits / self.temperature.detach().cpu().numpy()
