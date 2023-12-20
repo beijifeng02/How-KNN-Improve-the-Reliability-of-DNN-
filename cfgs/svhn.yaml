@@ -1,0 +1,10 @@
+DATA:
+  DATA_DIR: /data/dataset/
+  NAME: svhn
+  CLASS: 10
+  LENGTH: 26032
+  CALIB_NUM: 5000
+CACHE:
+  TRAIN_DIR: "cache/caches/cifar10/train"
+  TEST_DIR: "cache/caches/svhn/test"
+  CALIB_DIR: "cache/caches/svhn/calib"

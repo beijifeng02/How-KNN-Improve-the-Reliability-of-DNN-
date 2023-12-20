@@ -145,20 +145,23 @@ def load_cfg_fom_args(description="Config options."):
     parser.add_argument('--model', type=str, default='resnet50', help='model')
     parser.add_argument('--dataset', type=str, default='cifar10', help='dataset')
     parser.add_argument('--batch_size', type=int, default=256, help='test batch size')
-    parser.add_argument('--distence', type=str, default="knn", help='distance')
+    parser.add_argument('--distance', type=str, default="knn", help='distance')
 
     key_mapping = {
         "TEST.SEED": "seed",
         "MODEL.ARCH": "model",
         "DATA.NAME": "dataset",
         "TEST.BATCH_SIZE": "batch_size",
-        "TEST.DISTANCE": "knn"
+        "TEST.DISTANCE": "distance"
     }
     ##########################################################################################
     args = parser.parse_args()
 
     # load ckpt directory
-    getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/{args.dataset}/{args.model}.pth"
+    if args.dataset == "svhn":
+        getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/cifar10/{args.model}.pth"
+    else:
+        getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/{args.dataset}/{args.model}.pth"
 
     cfg_file = f"cfgs/{args.dataset}.yaml"
     merge_from_file(cfg_file)
