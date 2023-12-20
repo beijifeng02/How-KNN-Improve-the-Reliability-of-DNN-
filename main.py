@@ -10,9 +10,9 @@ description = "Experiment for <How KNN improves the reliability of DNN>"
 load_cfg_fom_args(description)
 set_seed(cfg)
 model = build_classifier(cfg)
-trainloader, calibloder, testloader = build_dataloader(cfg)
+trainloader, calibloader, testloader = build_dataloader(cfg)
 train_feature, train_logits, train_labels = model.run_and_cache_outputs(cfg, trainloader, mode="train")
-_, calib_logits, calib_labels = model.run_and_cache_outputs(cfg, calibloder, mode="calib")
+_, calib_logits, calib_labels = model.run_and_cache_outputs(cfg, calibloader, mode="calib")
 test_feature, test_logits, test_labels = model.run_and_cache_outputs(cfg, testloader, mode="test")
 
 # calibration
