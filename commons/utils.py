@@ -31,16 +31,22 @@ def get_fig_records(info, N_groups=5, **metadata):
         # Control for the start
         if q_lower == 0:
             vs[0] = -np.inf
-        mask = (atypicality <= vs[1]) & (atypicality > vs[0])
-        group_probs = probs[mask]
-        group_lbls = labels[mask]
-        group_atypicality = atypicality[mask]
 
-        record = {
-            "Accuracy": (np.argmax(group_probs, axis=1) == group_lbls).mean(),
-            "MeanAtypicality": group_atypicality.mean(),
-        }
-        records.append(record)
+        for conf in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0]:
+            conf_lower = conf
+            conf_upper = conf + 0.1
+
+            mask = (atypicality <= vs[1]) & (atypicality > vs[0]) & (probs >= conf_lower) & (probs <= conf_upper)
+            group_probs = probs[mask]
+            group_lbls = labels[mask]
+            group_atypicality = atypicality[mask]
+
+            record = {
+                "Accuracy": (np.argmax(group_probs, axis=1) == group_lbls).mean(),
+                "MeanAtypicality": group_atypicality.mean(),
+                "confidence": f"{conf_lower}-{conf_upper}"
+            }
+            records.append(record)
     return records
 
 
