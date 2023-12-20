@@ -112,14 +112,6 @@ def diff_cfg_nodes(cfg1: CfgNode, cfg2: CfgNode, path=""):
     return diff_nodes
 
 
-def assert_and_infer_cfg():
-    """Checks config values invariants."""
-    err_str = "Unknown adaptation method."
-    assert _C.MODEL.ADAPTATION in ["source", "norm", "tent"]
-    err_str = "Log destination '{}' not supported"
-    assert _C.LOG_DEST in ["stdout", "file"], err_str.format(_C.LOG_DEST)
-
-
 def merge_from_file(cfg_file):
     with g_pathmgr.open(cfg_file, "r") as f:
         cfg = _C.load_cfg(f)
@@ -134,24 +126,6 @@ def merge_from_file(cfg_file):
             _C[key].merge_from_other_cfg(cfg[key])
 
     _C.merge_from_other_cfg(cfg)
-
-
-def dump_cfg():
-    """Dumps the config to the output directory."""
-    cfg_file = os.path.join(_C.LOG.SAVE_DIR, _C.CFG_DEST)
-    with g_pathmgr.open(cfg_file, "w") as f:
-        _C.dump(stream=f)
-
-
-def load_cfg(out_dir, cfg_dest="config.yaml"):
-    """Loads config from specified output directory."""
-    cfg_file = os.path.join(out_dir, cfg_dest)
-    merge_from_file(cfg_file)
-
-
-def reset_cfg():
-    """Reset config to initial state."""
-    cfg.merge_from_other_cfg(_CFG_DEFAULT)
 
 
 def load_cfg_fom_args(description="Config options."):
@@ -183,13 +157,8 @@ def load_cfg_fom_args(description="Config options."):
     ##########################################################################################
     args = parser.parse_args()
 
-    # load cfg directory
+    # load ckpt directory
     getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/{args.dataset}/{args.model}.pth"
-
-    # load cache directory
-    getattr(cfg, "CACHE")["TRAIN_DIR"] = f"cache/caches/{args.dataset}/train"
-    getattr(cfg, "CACHE")["TEST_DIR"] = f"cache/caches/{args.dataset}/test"
-    getattr(cfg, "CACHE")["CALIB_DIR"] = f"cache/caches/{args.dataset}/calib"
 
     cfg_file = f"cfgs/{args.dataset}.yaml"
     merge_from_file(cfg_file)

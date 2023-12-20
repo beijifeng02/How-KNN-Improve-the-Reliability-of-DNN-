@@ -4,3 +4,7 @@ DATA:
   CLASS: 10
   LENGTH: 10000
   CALIB_NUM: 2000
+CACHE:
+  TRAIN_DIR: "cache/caches/cifar10/train"
+  TEST_DIR: "cache/caches/cifar10/test"
+  CALIB_DIR: "cache/caches/cifar10/calib"
