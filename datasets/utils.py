@@ -44,8 +44,8 @@ def build_dataloader(cfg):
     calib_num = cfg.DATA.CALIB_NUM
 
     if dataset == "cifar10":
-        trainset = datasets.CIFAR100(root=data_dir, train=True, download=True, transform=transform_cifar10_train)
-        testset = datasets.CIFAR100(root=data_dir, train=False, download=True, transform=transform_cifar10_test)
+        trainset = datasets.CIFAR10(root=data_dir, train=True, download=True, transform=transform_cifar10_train)
+        testset = datasets.CIFAR10(root=data_dir, train=False, download=True, transform=transform_cifar10_test)
 
     elif dataset == "cifar100":
         trainset = datasets.CIFAR100(root=data_dir, train=True, download=True, transform=transform_cifar100_train)
