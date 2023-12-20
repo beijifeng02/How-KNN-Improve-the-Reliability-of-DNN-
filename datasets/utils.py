@@ -53,7 +53,7 @@ def build_dataloader(cfg):
         testset = datasets.CIFAR100(root=data_dir, train=False, download=True, transform=transform_cifar100_test)
 
     elif dataset == "svhn":
-        trainset = datasets.SVHN(root=data_dir, split="Train", download=True, transform=transforms.ToTensor())
+        trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
         testset = datasets.SVHN(root=data_dir, split="test", download=True, transform=transforms.ToTensor())
 
     else:
