@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 from tqdm import tqdm
 from scipy.stats._multivariate import _PSD
 from sklearn.decomposition import PCA
@@ -158,14 +159,16 @@ class KNN_estimator:
         self.k = cfg.TEST.K
 
     def fit(self, features, labels):
-        self.features = features
-        self.labels = labels
+        self.features = torch.tensor(features).cuda()
+        self.labels = torch.tensor(labels).cuda()
 
     def compute_atypicality(self, features):
+        features = torch.tensor(features).cuda()
         atypicality_list = []
+
         for i in tqdm(range(len(features))):
-            distance = np.linalg.norm(features[i] - self.features, axis=1)
-            top_k_distances = np.sort(distance)[:self.k]
+            distance = torch.norm(features[i] - self.features, dim=1)
+            top_k_distances = torch.sort(distance)[:self.k]
             atypicality = np.exp(np.sum(top_k_distances) / self.k)
             atypicality_list.append(atypicality)
 
