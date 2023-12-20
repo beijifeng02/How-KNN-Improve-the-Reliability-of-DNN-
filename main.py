@@ -22,9 +22,9 @@ if __name__ == '__main__':
     set_seed(args.seed)
     model = build_classifier(args.model)
     trainloader, calibloder, testloader = build_dataloader(batch_size=args.batch_size)
-    train_feature, train_logits, train_labels = model.run_and_cache_outputs(trainloader)
-    _, calib_logits, calib_labels = model.run_and_cache_outputs(calibloder)
-    test_feature, test_logits, test_labels = model.run_and_cache_outputs(testloader, train=False)
+    train_feature, train_logits, train_labels = model.run_and_cache_outputs(trainloader, mode="train")
+    _, calib_logits, calib_labels = model.run_and_cache_outputs(calibloder, mode="calib")
+    test_feature, test_logits, test_labels = model.run_and_cache_outputs(testloader, mode="test")
 
     # calibration
     calibrator = TemperatureScaling()
