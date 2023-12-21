@@ -70,7 +70,7 @@ def build_dataloader(cfg):
         traindir = os.path.join(data_dir, 'imagenet/images/train')
         validir = os.path.join(data_dir, 'imagenet/images/val')
         trainset = datasets.ImageFolder(root=traindir, transform=transform_imagenet_train)
-        trainset, _ = torch.utils.data.random_split(trainset, [40000, len(trainset) - 40000])
+        trainset, _ = torch.utils.data.random_split(trainset, [35000, len(trainset) - 35000])
         testset = datasets.ImageFolder(root=validir, transform=transform_imagenet_test)
         testset, _ = torch.utils.data.random_split(testset, [20000, 30000])
 
