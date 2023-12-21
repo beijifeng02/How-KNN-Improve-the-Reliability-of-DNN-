@@ -1,6 +1,6 @@
 import torch
 import torch.backends.cudnn as cudnn
-import torchvision.models as models
+import torchvision
 
 
 def build_model(cfg):
@@ -43,6 +43,18 @@ def build_model(cfg):
         state_dic = torch.load(ckpt_dir)
         model.load_state_dict(state_dic)
         model = torch.nn.DataParallel(model)
+
+    elif dataset == "imagenet":
+        if model_name == "resnet18":
+            model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
+        elif model_name == "resnet50":
+            model = torchvision.models.resnet50(weights=torchvision.models.ResNet50_Weights.IMAGENET1K_V1)
+        elif model_name == "resnet101":
+            model = torchvision.models.resnet101(weights=torchvision.models.ResNet101_Weights.IMAGENET1K_V1)
+        else:
+            raise ValueError("This models is not supported.")
+        model = torch.nn.DataParallel(model)
+        cudnn.benchmark = True
 
     else:
         raise NotImplementedError(f"dataset {dataset} is not supported.")

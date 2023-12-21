@@ -34,6 +34,20 @@ transform_cifar100_test = transforms.Compose([
                          (0.2673342858792401, 0.2564384629170883, 0.27615047132568404)),
 ])
 
+# imagenet transform
+transform_imagenet_train = transforms.Compose([
+    transforms.RandomResizedCrop(224),
+    transforms.RandomHorizontalFlip(),
+    transforms.ToTensor(),
+    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+])
+
+transform_imagenet_test = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+])
 
 # ----------------------------------------------------------------------- #
 def build_dataloader(cfg):
@@ -51,6 +65,14 @@ def build_dataloader(cfg):
     elif dataset == "cifar100":
         trainset = datasets.CIFAR100(root=data_dir, train=True, download=True, transform=transform_cifar100_train)
         testset = datasets.CIFAR100(root=data_dir, train=False, download=True, transform=transform_cifar100_test)
+
+    elif dataset == 'imagenet':
+        traindir = os.path.join(data_dir, 'imagenet/images/train')
+        validir = os.path.join(data_dir, 'imagenet/images/val')
+        trainset = datasets.ImageFolder(root=traindir, transform=transform_imagenet_train)
+        trainset, _ = torch.utils.data.random_split(trainset, [50000, len(trainset) - 50000])
+        testset = datasets.ImageFolder(root=validir, transform=transform_imagenet_test)
+        testset, _ = torch.utils.data.random_split(testset, [20000, 30000])
 
     elif dataset == "svhn":
         trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
