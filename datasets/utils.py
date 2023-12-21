@@ -72,7 +72,7 @@ def build_dataloader(cfg):
         trainset = datasets.ImageFolder(root=traindir, transform=transform_imagenet_train)
         trainset, _ = torch.utils.data.random_split(trainset, [40000, len(trainset) - 40000])
         testset = datasets.ImageFolder(root=validir, transform=transform_imagenet_test)
-        testset, _ = torch.utils.data.random_split(testset, [20000, 30000])
+        testset, _ = torch.utils.data.random_split(testset, [30000, 20000])
 
     elif dataset == "svhn":
         trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
