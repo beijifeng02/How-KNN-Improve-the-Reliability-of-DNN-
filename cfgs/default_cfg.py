@@ -78,6 +78,9 @@ _C.TEST.DISTANCE = "knn"
 # K
 _C.TEST.K = 3
 
+# experiment
+_C.TEST.EXPERIMENT = "atypicality"
+
 # --------------------------------- Default config -------------------------- #
 _CFG_DEFAULT = _C.clone()
 _CFG_DEFAULT.freeze()

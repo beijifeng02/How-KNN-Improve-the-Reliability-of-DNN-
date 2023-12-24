@@ -8,3 +8,5 @@ CACHE:
   TRAIN_DIR: "cache/caches/cifar100/train"
   TEST_DIR: "cache/caches/cifar100/test"
   CALIB_DIR: "cache/caches/cifar100/calib"
+TEST:
+  EXPERIMENT: "atypicality"
