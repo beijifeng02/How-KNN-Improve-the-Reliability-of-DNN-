@@ -1,5 +1,6 @@
 from cfgs.default_cfg import cfg, load_cfg_fom_args
 from commons.utils import set_seed, evaluate
+from commons.logger import logger
 from datasets.utils import build_dataloader
 from cache.utils import build_classifier
 from algorithms.estimator import build_estimator
@@ -14,6 +15,7 @@ trainloader, calibloader, testloader = build_dataloader(cfg)
 train_feature, train_logits, train_labels = model.run_and_cache_outputs(cfg, trainloader, mode="train")
 _, calib_logits, calib_labels = model.run_and_cache_outputs(cfg, calibloader, mode="calib")
 test_feature, test_logits, test_labels = model.run_and_cache_outputs(cfg, testloader, mode="test")
+logger = logger(cfg)
 
 # calibration
 calibrator = TemperatureScaling()
@@ -25,4 +27,5 @@ estimator = build_estimator(cfg)
 estimator.fit(train_feature, train_labels)
 atypicality = estimator.compute_atypicality(test_feature)
 data = evaluate(test_labels, test_logits, atypicality, N_groups=5)
-print(data)
+logger.update(atypicality, data)
+logger.write()

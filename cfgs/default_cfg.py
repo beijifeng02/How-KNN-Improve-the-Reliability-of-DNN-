@@ -81,6 +81,9 @@ _C.TEST.K = 3
 # experiment
 _C.TEST.EXPERIMENT = "atypicality"
 
+# output file
+_C.TEST.OUTPUT_DIR = "logs/cifar10"
+
 # --------------------------------- Default config -------------------------- #
 _CFG_DEFAULT = _C.clone()
 _CFG_DEFAULT.freeze()
@@ -168,6 +171,9 @@ def load_cfg_fom_args(description="Config options."):
         getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/cifar10/{args.model}.pth"
     else:
         getattr(cfg, "MODEL")["CKPT_DIR"] = f"ckpt/{args.dataset}/{args.model}.pth"
+
+    # load logs directory
+    getattr(cfg, "TEST")["OUTPUT_DIR"] = f"logs/{args.dataset}/{args.model}/"
 
     cfg_file = f"cfgs/{args.dataset}.yaml"
     merge_from_file(cfg_file)
