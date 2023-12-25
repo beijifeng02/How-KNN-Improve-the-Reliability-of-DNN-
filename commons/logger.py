@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pandas as pd
 
 
 class logger:
@@ -19,3 +20,4 @@ class logger:
 
     def write(self):
         np.savetxt(self.atyp_file, self.atypicality, delimiter=',')
+        self.data.to_csv(self.data_file, index=False)
