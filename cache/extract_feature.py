@@ -17,7 +17,8 @@ def extract_feature(model, loader, cfg, mode="train"):
     featdims = [feat.shape[1] for feat in feature_list]
 
     if not os.path.exists(f"{dir[mode]}/{model_name}_feature.npy"):
-        os.makedirs(dir[mode])
+        if not os.path.exists(dir[mode]):
+            os.makedirs(dir[mode])
 
         features = np.zeros((len(loader.dataset), sum(featdims)))
         logits = np.zeros((len(loader.dataset), num_classes))
