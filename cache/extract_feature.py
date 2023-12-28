@@ -15,7 +15,7 @@ def extract_feature(model, loader, cfg, mode="train"):
     score, feature_list = model.feature_list(dummy_input)
     featdims = [feat.shape[1] for feat in feature_list]
 
-    if os.path.exists(dir[mode]):
+    if not os.path.exists(dir[mode]):
         features = np.zeros((len(loader.dataset), sum(featdims)))
 
         logits = np.zeros((len(loader.dataset), num_classes))
