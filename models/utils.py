@@ -21,6 +21,10 @@ def build_model(cfg):
         else:
             raise ValueError("This models is not supported.")
 
+        checkpoint = torch.load(ckpt_dir, map_location='cpu')
+        checkpoint = {'net': {key.replace("module.", ""): value for key, value in checkpoint['net'].items()}}
+        model.load_state_dict(checkpoint['net'])
+
     elif dataset == "cifar100":
         if model_name == "resnet18":
             from .resnet import resnet18
@@ -38,8 +42,7 @@ def build_model(cfg):
         raise NotImplementedError(f"dataset {dataset} is not supported.")
 
     checkpoint = torch.load(ckpt_dir, map_location='cpu')
-    checkpoint = {'net': {key.replace("module.", ""): value for key, value in checkpoint['net'].items()}}
-    model.load_state_dict(checkpoint['net'])
+    model.load_state_dict(checkpoint)
     model.cuda()
     model.eval()
     return model
