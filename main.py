@@ -24,3 +24,4 @@ calib_features, calib_logits, calib_labels = extract_feature(model, calibloader,
 # calibration
 calibrator = TemperatureScaling()
 calibrator.fit(calib_logits, calib_labels)
+test_logits = calibrator.calibrate(test_logits, softmax_bool=False)
