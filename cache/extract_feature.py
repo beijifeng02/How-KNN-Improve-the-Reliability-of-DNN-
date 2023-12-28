@@ -16,7 +16,7 @@ def extract_feature(model, loader, cfg, mode="train"):
     score, feature_list = model.feature_list(dummy_input)
     featdims = [feat.shape[1] for feat in feature_list]
 
-    if not os.path.exists(f"{dir[mode]}/model_name_feature.npy"):
+    if not os.path.exists(f"{dir[mode]}/{model_name}_feature.npy"):
         os.makedirs(dir[mode])
 
         features = np.zeros((len(loader.dataset), sum(featdims)))
@@ -39,13 +39,13 @@ def extract_feature(model, loader, cfg, mode="train"):
             if batch_idx % 100 == 0:
                 print(f"{batch_idx}/{len(loader)}")
 
-        np.save(f"{dir[mode]}/model_name_feature.npy", features)
-        np.save(f"{dir[mode]}/model_name_logits.npy", logits)
-        np.save(f"{dir[mode]}/model_name_labels.npy", labels)
+        np.save(f"{dir[mode]}/{model_name}_feature.npy", features)
+        np.save(f"{dir[mode]}/{model_name}_logits.npy", logits)
+        np.save(f"{dir[mode]}/{model_name}_labels.npy", labels)
 
     else:
-        features = np.load(f"{dir[mode]}/model_name_feature.npy", allow_pickle=True)
-        logits = np.load(f"{dir[mode]}/model_name_logits.npy", allow_pickle=True)
-        labels = np.load(f"{dir[mode]}/model_name_labels.npy", allow_pickle=True)
+        features = np.load(f"{dir[mode]}/{model_name}_feature.npy", allow_pickle=True)
+        logits = np.load(f"{dir[mode]}/{model_name}_logits.npy", allow_pickle=True)
+        labels = np.load(f"{dir[mode]}/{model_name}_labels.npy", allow_pickle=True)
 
     return features, logits, labels
