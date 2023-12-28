@@ -75,7 +75,8 @@ def build_dataloader(cfg):
         testset, _ = torch.utils.data.random_split(testset, [20000, 30000])
 
     elif dataset == "svhn":
-        trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
+        # trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
+        trainset = datasets.CIFAR10(root=data_dir, train=True, download=True, transform=transform_cifar10_train)
         testset = datasets.SVHN(root=data_dir, split="test", download=True, transform=transforms.ToTensor())
 
     else:
