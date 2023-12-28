@@ -5,6 +5,7 @@ import torch.nn.functional as F
 
 
 def extract_feature(model, loader, cfg, mode="train"):
+    model_name = cfg.MODEL.ARCH
     dir = {'train': cfg.CACHE.TRAIN_DIR,
            'test': cfg.CACHE.TEST_DIR,
            'calib': cfg.CACHE.CALIB_DIR}
@@ -15,7 +16,7 @@ def extract_feature(model, loader, cfg, mode="train"):
     score, feature_list = model.feature_list(dummy_input)
     featdims = [feat.shape[1] for feat in feature_list]
 
-    if not os.path.exists(dir[mode]):
+    if not os.path.exists(f"{dir[mode]}/model_name_feature.npy"):
         os.makedirs(dir[mode])
 
         features = np.zeros((len(loader.dataset), sum(featdims)))
@@ -38,13 +39,13 @@ def extract_feature(model, loader, cfg, mode="train"):
             if batch_idx % 100 == 0:
                 print(f"{batch_idx}/{len(loader)}")
 
-        np.save(f"{dir[mode]}/feature.npy", features)
-        np.save(f"{dir[mode]}/logits.npy", logits)
-        np.save(f"{dir[mode]}/labels.npy", labels)
+        np.save(f"{dir[mode]}/model_name_feature.npy", features)
+        np.save(f"{dir[mode]}/model_name_logits.npy", logits)
+        np.save(f"{dir[mode]}/model_name_labels.npy", labels)
 
     else:
-        features = np.load(f"{dir[mode]}/feature.npy", allow_pickle=True)
-        logits = np.load(f"{dir[mode]}/logits.npy", allow_pickle=True)
-        labels = np.load(f"{dir[mode]}/labels.npy", allow_pickle=True)
+        features = np.load(f"{dir[mode]}/model_name_feature.npy", allow_pickle=True)
+        logits = np.load(f"{dir[mode]}/model_name_logits.npy", allow_pickle=True)
+        labels = np.load(f"{dir[mode]}/model_name_labels.npy", allow_pickle=True)
 
     return features, logits, labels
