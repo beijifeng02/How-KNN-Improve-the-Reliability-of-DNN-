@@ -5,7 +5,7 @@ from cfgs.default_cfg import cfg, load_cfg_fom_args
 from commons.utils import set_seed, evaluate
 from commons.logger import logger
 from datasets.utils import build_dataloader
-from cache.utils import build_classifier
+from models.utils import build_model
 from algorithms.estimator import build_estimator
 from algorithms.calibrator import TemperatureScaling
 import faiss
@@ -14,7 +14,7 @@ import faiss
 description = "Experiment for <How KNN improves the reliability of DNN>"
 load_cfg_fom_args(description)
 set_seed(cfg)
-model = build_classifier(cfg)
+model = build_model(cfg)
 trainloader, calibloader, testloader = build_dataloader(cfg)
 
 train_features, train_logits, train_labels = extract_feature(model, trainloader, cfg, mode="train")
