@@ -20,3 +20,7 @@ trainloader, calibloader, testloader = build_dataloader(cfg)
 train_features, train_logits, train_labels = extract_feature(model, trainloader, cfg, mode="train")
 test_features, test_logits, test_labels = extract_feature(model, testloader, cfg, mode="test")
 calib_features, calib_logits, calib_labels = extract_feature(model, calibloader, cfg, mode="calib")
+
+# calibration
+calibrator = TemperatureScaling()
+calibrator.fit(calib_logits, calib_labels)
