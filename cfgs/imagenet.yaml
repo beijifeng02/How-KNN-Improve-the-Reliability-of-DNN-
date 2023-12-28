@@ -1,6 +1,0 @@
-DATA:
-  DATA_DIR: /data/dataset/
-  NAME: imagenet
-  CLASS: 1000
-  LENGTH: 20000
-  CALIB_NUM: 4000
