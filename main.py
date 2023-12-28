@@ -5,7 +5,7 @@ from datasets.utils import build_dataloader
 from cache.utils import build_classifier
 from algorithms.estimator import build_estimator
 from algorithms.calibrator import TemperatureScaling
-import faiss
+# import faiss
 
 
 description = "Experiment for <How KNN improves the reliability of DNN>"
@@ -26,14 +26,14 @@ test_logits = calibrator.calibrate(test_logits, softmax_bool=False)
 # calculate atypicality
 estimator = build_estimator(cfg)
 estimator.fit(train_feature, train_labels)
-# atypicality = estimator.compute_atypicality(test_feature)
-# data = evaluate(test_labels, test_logits, atypicality, N_groups=5)
-index = faiss.IndexFlatL2(train_feature.shape[1])
-index.add(train_feature)
+atypicality = estimator.compute_atypicality(test_feature)
+data = evaluate(test_labels, test_logits, atypicality, N_groups=5)
+# index = faiss.IndexFlatL2(train_feature.shape[1])
+# index.add(train_feature)
 
-for K in [50]:
-    distances, _ = index.search(test_feature, K)
-    atypicality = -distances[:, -1]
+# for K in [50]:
+#     distances, _ = index.search(test_feature, K)
+#     atypicality = -distances[:, -1]
 
 data = evaluate(test_labels, test_logits, atypicality, N_groups=5)
 logger.update(atypicality, data)
