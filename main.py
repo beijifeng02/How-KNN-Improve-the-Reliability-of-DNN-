@@ -5,6 +5,7 @@ from datasets.utils import build_dataloader
 from cache.utils import build_classifier
 from algorithms.estimator import build_estimator
 from algorithms.calibrator import TemperatureScaling
+import faiss
 
 
 description = "Experiment for <How KNN improves the reliability of DNN>"
