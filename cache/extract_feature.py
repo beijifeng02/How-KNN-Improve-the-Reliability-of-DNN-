@@ -10,15 +10,15 @@ def extract_feature(model, loader, cfg, mode="train"):
            'calib': cfg.CACHE.CALIB_DIR}
     num_classes = cfg.DATA.CLASS
     batch_size = cfg.TEST.BATCH_SIZE
-    os.makedirs(dir[mode])
 
     dummy_input = torch.zeros((1, 3, 32, 32)).cuda()
     score, feature_list = model.feature_list(dummy_input)
     featdims = [feat.shape[1] for feat in feature_list]
 
     if not os.path.exists(dir[mode]):
-        features = np.zeros((len(loader.dataset), sum(featdims)))
+        os.makedirs(dir[mode])
 
+        features = np.zeros((len(loader.dataset), sum(featdims)))
         logits = np.zeros((len(loader.dataset), num_classes))
         labels = np.zeros(len(loader.dataset))
 
