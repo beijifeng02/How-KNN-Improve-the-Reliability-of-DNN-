@@ -508,15 +508,15 @@ class ResNetCifar(AbstractResNet):
         return out
 
 
-def resnet18(**kwargs):
-    return ResNetCifar(BasicBlock, [2,2,2,2], **kwargs)
+def resnet18(num_classes=10, **kwargs):
+    return ResNetCifar(BasicBlock, [2,2,2,2], num_classes=num_classes, **kwargs)
 
 
 def resnet34(**kwargs):
     return ResNetCifar(BasicBlock, [3, 4, 6, 3], **kwargs)
 
-def resnet50(**kwargs):
-    return ResNetCifar(Bottleneck, [3, 4, 6, 3], **kwargs)
+def resnet50(num_classes=10, **kwargs):
+    return ResNetCifar(Bottleneck, [3, 4, 6, 3], num_classes=num_classes, **kwargs)
 
 def resnet101(**kwargs):
     return ResNetCifar(Bottleneck, [3, 4, 23, 3], **kwargs)

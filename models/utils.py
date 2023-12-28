@@ -28,13 +28,13 @@ def build_model(cfg):
     elif dataset == "cifar100":
         if model_name == "resnet18":
             from .resnet import resnet18
-            model = resnet18()
+            model = resnet18(num_classes=100)
         elif model_name == "resnet50":
             from .resnet import resnet50
-            model = resnet50()
+            model = resnet50(num_classes=100)
         elif model_name == "resnet101":
             from .resnet import resnet101
-            model = resnet101()
+            model = resnet101(num_classes=100)
         else:
             raise ValueError("This models is not supported.")
 
