@@ -10,6 +10,7 @@ def extract_feature(model, loader, cfg, mode="train"):
            'calib': cfg.CACHE.CALIB_DIR}
     num_classes = cfg.DATA.CLASS
     batch_size = cfg.TEST.BATCH_SIZE
+    os.makedirs(dir[mode])
 
     dummy_input = torch.zeros((1, 3, 32, 32)).cuda()
     score, feature_list = model.feature_list(dummy_input)
@@ -42,7 +43,6 @@ def extract_feature(model, loader, cfg, mode="train"):
         np.save(f"{dir[mode]}/labels.npy", labels)
 
     else:
-        os.makedirs(dir[mode])
         features = np.load(f"{dir[mode]}/feature.npy", allow_pickle=True)
         logits = np.load(f"{dir[mode]}/logits.npy", allow_pickle=True)
         labels = np.load(f"{dir[mode]}/labels.npy", allow_pickle=True)
