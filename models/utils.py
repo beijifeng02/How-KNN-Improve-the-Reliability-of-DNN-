@@ -21,10 +21,9 @@ def build_model(cfg):
         else:
             raise ValueError("This models is not supported.")
 
-        model = torch.nn.DataParallel(model)
-        cudnn.benchmark = True
-        state_dic = torch.load(ckpt_dir)
-        model.load_state_dict(state_dic["net"])
+        checkpoint = torch.load(ckpt_dir, map_location='cpu')
+        checkpoint = {'net': {key.replace("module.", ""): value for key, value in checkpoint['net'].items()}}
+        model.load_state_dict(checkpoint['net'])
 
     elif dataset == "cifar100":
         if model_name == "resnet18":
