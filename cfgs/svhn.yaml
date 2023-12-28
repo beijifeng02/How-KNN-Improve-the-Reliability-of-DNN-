@@ -1,5 +1,5 @@
 DATA:
-  DATA_DIR: /data/dataset/
+  DATA_DIR: datasets/
   NAME: svhn
   CLASS: 10
   LENGTH: 26032
