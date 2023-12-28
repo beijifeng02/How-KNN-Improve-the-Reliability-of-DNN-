@@ -10,14 +10,14 @@ def build_model(cfg):
 
     if dataset == "cifar10" or dataset == "svhn":
         if model_name == "resnet18":
-            from .resnet import ResNet18
-            model = ResNet18()
+            from .resnet import resnet18
+            model = resnet18()
         elif model_name == "resnet50":
-            from .resnet import ResNet50
-            model = ResNet50()
+            from .resnet import resnet50
+            model = resnet50()
         elif model_name == "resnet101":
-            from .resnet import ResNet101
-            model = ResNet101()
+            from .resnet import resnet101
+            model = resnet101()
         else:
             raise ValueError("This models is not supported.")
 
