@@ -6,6 +6,7 @@ from sklearn.decomposition import PCA
 from sklearn.covariance import EmpiricalCovariance
 from sklearn.neighbors import KNeighborsClassifier
 from scipy.special import logsumexp
+import faiss
 
 
 def build_estimator(cfg):
