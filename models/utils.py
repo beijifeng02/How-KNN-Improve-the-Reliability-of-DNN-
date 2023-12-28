@@ -46,5 +46,6 @@ def build_model(cfg):
     else:
         raise NotImplementedError(f"dataset {dataset} is not supported.")
 
+    model.cuda()
     model.eval()
     return model
