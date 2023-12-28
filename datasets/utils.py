@@ -51,6 +51,8 @@ transform_imagenet_test = transforms.Compose([
 
 # ----------------------------------------------------------------------- #
 def build_dataloader(cfg):
+    root = "/data/dataset/"
+
     dataset = cfg.DATA.NAME
     data_dir = cfg.DATA.DATA_DIR
     batch_size = cfg.TEST.BATCH_SIZE
@@ -76,7 +78,7 @@ def build_dataloader(cfg):
 
     elif dataset == "svhn":
         # trainset = datasets.SVHN(root=data_dir, split="train", download=True, transform=transforms.ToTensor())
-        trainset = datasets.CIFAR10(root=data_dir, train=True, download=True, transform=transform_cifar10_train)
+        trainset = datasets.CIFAR10(root=root, train=True, download=True, transform=transform_cifar10_train)
         testset = datasets.SVHN(root=data_dir, split="test", download=True, transform=transforms.ToTensor())
 
     else:
