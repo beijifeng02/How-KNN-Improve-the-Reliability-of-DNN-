@@ -1,4 +1,6 @@
 import torch
+import numpy as np
+import pandas as pd
 
 from cache.extract_feature import extract_feature
 from cfgs.default_cfg import cfg, load_cfg_fom_args
@@ -25,3 +27,20 @@ calib_features, calib_logits, calib_labels = extract_feature(model, calibloader,
 calibrator = TemperatureScaling()
 calibrator.fit(calib_logits, calib_labels)
 test_logits = calibrator.calibrate(test_logits, softmax_bool=False)
+
+normalizer = lambda x: x / (np.linalg.norm(x, ord=2, axis=-1, keepdims=True) + 1e-10)
+prepos_feat = lambda x: np.ascontiguousarray(normalizer(x[:, range(448, 960)]))
+
+train_features = prepos_feat(train_features)
+test_features = prepos_feat(test_features)
+
+index = faiss.IndexFlatL2(train_features.shape[1])
+index.add(train_features)
+K = 20
+
+D, _ = index.search(test_features, K)
+scores_in = D[:,-1]
+data = evaluate(test_labels, test_logits, scores_in, N_groups=5)
+atypicality = pd.DataFrame(scores_in, columns=["atypicality"])
+data.to_csv(f'{cfg.DATA.NAME}_{cfg.MODEL.ARCH}.csv', index=False)
+atypicality.to_csv(f"{cfg.DATA.NAME}_{cfg.MODEL.ARCH}_atypicality.csv", index=False)

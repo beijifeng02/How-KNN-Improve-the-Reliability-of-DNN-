@@ -2,7 +2,9 @@
 
 In this project, we explore how KNN improves the reliability of neural networks, including two parts:
 * how model performs on data samples with different KNN distances
-* whether the KNN distances of out-of-distribution dataset exhibits different distribution compared with in-distribution 
+* whether the KNN distances of out-of-distribution dataset exhibits different distribution compared with in-distribution
+
+Additionally, we provide a demo for Conformal Prediction.
 
 ## setups
 We use CIFAR10 and CIFAR100 as in-distribution datasets on which we conduct experiments to answer the first problem. We 
